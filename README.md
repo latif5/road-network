@@ -36,7 +36,7 @@ This project is a simulation of a road network that calculates routes and manage
 
 ## Running the Project
 
-1. **Start the development server:**
+**Start the development server:**
 
    Using npm:
 
@@ -52,37 +52,6 @@ This project is a simulation of a road network that calculates routes and manage
 
    This will start the Vite development server and open the application in your default web browser.
 
-2. **Build the project for production:**
-
-   Using npm:
-
-   ```bash
-   npm run build
-   ```
-
-   Or using Yarn:
-
-   ```bash
-   yarn build
-   ```
-
-   This will create a production-ready build of the application in the `dist` directory.
-
-3. **Preview the production build:**
-
-   Using npm:
-
-   ```bash
-   npm run preview
-   ```
-
-   Or using Yarn:
-
-   ```bash
-   yarn preview
-   ```
-
-   This will serve the production build locally for testing.
 
 ## Running Tests
 

@@ -37,6 +37,32 @@ function App() {
     });
   };
 
+  const handleRemoveVehicle = (roadName: string, vehicleType: VehicleType) => {
+    setRoads(prevRoads => {
+      const road = prevRoads[roadName];
+      if (road.vehicles[vehicleType] === 0) return prevRoads;
+
+      const updatedVehicles = {
+        ...road.vehicles,
+        [vehicleType]: road.vehicles[vehicleType] - 1
+      };
+      
+      const newCongestion = Object.entries(updatedVehicles).reduce(
+        (total, [type, count]) => total + (CONGESTION_VALUES[type as VehicleType] * count),
+        0
+      );
+
+      return {
+        ...prevRoads,
+        [roadName]: {
+          ...road,
+          vehicles: updatedVehicles,
+          congestion: newCongestion
+        }
+      };
+    });
+  };
+
   const handleCalculateRoute = () => {
     if (!start || !end) {
       alert("Please enter both start and end roads.");
@@ -98,7 +124,7 @@ function App() {
               Find Route
             </button>
             {route.length > 0 && (
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+              <div className="mt-6 p-4 bg-blue-100 rounded-lg">
                 <h2 className="text-xl font-semibold text-gray-800 mb-2">Calculated Route:</h2>
                 <p className="text-lg text-gray-700">{route.join(' > ')}</p>
               </div>
@@ -111,7 +137,7 @@ function App() {
                   key={road.name}
                   road={road}
                   onAddVehicle={handleAddVehicle}
-                  onRemoveVehicle={()=>{}}
+                  onRemoveVehicle={handleRemoveVehicle}
               />
             ))}
           </div>

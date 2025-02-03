@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { CONGESTION_VALUES, RoadNetwork, VehicleType } from "./types";
+import { RoadNetwork } from "./types";
 import { initialRoads } from "./data/roads";
-import { findShortestPath } from "./utils";
-import { roadConnections } from "./data/roadConnections";
 import VehicleAction from "./components/VehicleAction";
+import { useAddVehicle, useRemoveVehicle } from "./hooks/useManageVehicle";
+import useCalculateRoute from "./hooks/useCalculateRoute";
 
 function App() {
   const [start, setStart] = useState<string>('');
@@ -13,70 +13,9 @@ function App() {
 
   const roadOptions = Object.keys(initialRoads);
 
-  const handleAddVehicle = (roadName: string, vehicleType: VehicleType) => {
-    setRoads(prevRoads => {
-      const road = prevRoads[roadName];
-      const updatedVehicles = {
-        ...road.vehicles,
-        [vehicleType]: road.vehicles[vehicleType] + 1
-      };
-      
-      const newCongestion = Object.entries(updatedVehicles).reduce(
-        (total, [type, count]) => total + (CONGESTION_VALUES[type as VehicleType] * count),
-        0
-      );
-
-      return {
-        ...prevRoads,
-        [roadName]: {
-          ...road,
-          vehicles: updatedVehicles,
-          congestion: newCongestion
-        }
-      };
-    });
-  };
-
-  const handleRemoveVehicle = (roadName: string, vehicleType: VehicleType) => {
-    setRoads(prevRoads => {
-      const road = prevRoads[roadName];
-      if (road.vehicles[vehicleType] === 0) return prevRoads;
-
-      const updatedVehicles = {
-        ...road.vehicles,
-        [vehicleType]: road.vehicles[vehicleType] - 1
-      };
-      
-      const newCongestion = Object.entries(updatedVehicles).reduce(
-        (total, [type, count]) => total + (CONGESTION_VALUES[type as VehicleType] * count),
-        0
-      );
-
-      return {
-        ...prevRoads,
-        [roadName]: {
-          ...road,
-          vehicles: updatedVehicles,
-          congestion: newCongestion
-        }
-      };
-    });
-  };
-
-  const handleCalculateRoute = () => {
-    if (!start || !end) {
-      alert("Please enter both start and end roads.");
-      return;
-    }
-    
-    const calculatedRoute = findShortestPath(start, end, roads, roadConnections)
-    console.log("🚀 ~ calculatedRoute:", calculatedRoute)
-    if (calculatedRoute.length === 0) {
-      alert("No valid route found.");
-    } else {
-      setRoute(calculatedRoute);
-    }
-  };
+  const handleAddVehicle = useAddVehicle(setRoads);
+  const handleRemoveVehicle = useRemoveVehicle(setRoads);
+  const handleCalculateRoute = useCalculateRoute(start, end, roads, setRoute);
 
   return (
     <>
@@ -134,10 +73,10 @@ function App() {
           <div className="grid grid-cols-3 gap-4">
             {Object.values(roads).map(road => (
               <VehicleAction
-                  key={road.name}
-                  road={road}
-                  onAddVehicle={handleAddVehicle}
-                  onRemoveVehicle={handleRemoveVehicle}
+                key={road.name}
+                road={road}
+                onAddVehicle={handleAddVehicle}
+                onRemoveVehicle={handleRemoveVehicle}
               />
             ))}
           </div>

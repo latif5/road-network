@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RoadNetwork } from "./types";
+import { CONGESTION_VALUES, RoadNetwork, VehicleType } from "./types";
 import { initialRoads } from "./data/roads";
 import { findShortestPath } from "./utils";
 import { roadConnections } from "./data/roadConnections";
@@ -12,6 +12,30 @@ function App() {
   const [roads, setRoads] = useState<RoadNetwork>(initialRoads);
 
   const roadOptions = Object.keys(initialRoads);
+
+  const handleAddVehicle = (roadName: string, vehicleType: VehicleType) => {
+    setRoads(prevRoads => {
+      const road = prevRoads[roadName];
+      const updatedVehicles = {
+        ...road.vehicles,
+        [vehicleType]: road.vehicles[vehicleType] + 1
+      };
+      
+      const newCongestion = Object.entries(updatedVehicles).reduce(
+        (total, [type, count]) => total + (CONGESTION_VALUES[type as VehicleType] * count),
+        0
+      );
+
+      return {
+        ...prevRoads,
+        [roadName]: {
+          ...road,
+          vehicles: updatedVehicles,
+          congestion: newCongestion
+        }
+      };
+    });
+  };
 
   const handleCalculateRoute = () => {
     if (!start || !end) {
@@ -86,7 +110,7 @@ function App() {
               <VehicleAction
                   key={road.name}
                   road={road}
-                  onAddVehicle={()=>{}}
+                  onAddVehicle={handleAddVehicle}
                   onRemoveVehicle={()=>{}}
               />
             ))}

@@ -1,50 +1,122 @@
-# React + TypeScript + Vite
+# Road Network Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a simulation of a road network that calculates routes and manages vehicle traffic. It includes a set of React hooks for calculating routes and managing vehicle states, along with a testing suite to ensure functionality.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Calculate the shortest route between two points in a road network.
+- Manage vehicle traffic and congestion on roads.
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Node.js (version 18 or later)
 
-- Configure the top-level `parserOptions` property like this:
+## Installation
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. **Clone the repository:**
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+   ```bash
+   git clone https://github.com/your-username/road-network.git
+   cd road-network
+   ```
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+2. **Install dependencies:**
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+   Using npm:
+
+   ```bash
+   npm install
+   ```
+
+   Or using Yarn:
+
+   ```bash
+   yarn install
+   ```
+
+## Running the Project
+
+1. **Start the development server:**
+
+   Using npm:
+
+   ```bash
+   npm run dev
+   ```
+
+   Or using Yarn:
+
+   ```bash
+   yarn dev
+   ```
+
+   This will start the Vite development server and open the application in your default web browser.
+
+2. **Build the project for production:**
+
+   Using npm:
+
+   ```bash
+   npm run build
+   ```
+
+   Or using Yarn:
+
+   ```bash
+   yarn build
+   ```
+
+   This will create a production-ready build of the application in the `dist` directory.
+
+3. **Preview the production build:**
+
+   Using npm:
+
+   ```bash
+   npm run preview
+   ```
+
+   Or using Yarn:
+
+   ```bash
+   yarn preview
+   ```
+
+   This will serve the production build locally for testing.
+
+## Running Tests
+
+1. **Run the test suite:**
+
+   Using npm:
+
+   ```bash
+   npm test
+   ```
+
+   Or using Yarn:
+
+   ```bash
+   yarn test
+   ```
+
+2. **Run tests in watch mode:**
+
+   Using npm:
+
+   ```bash
+   npm run test:watch
+   ```
+
+   Or using Yarn:
+
+   ```bash
+   yarn test:watch
+   ```
+
+   This will run the tests and watch for changes, re-running the tests automatically when files are updated.
+
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

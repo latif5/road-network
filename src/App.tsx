@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { RoadNetwork } from "./types";
 import { initialRoads } from "./data/roads";
+import { findShortestPath } from "./utils";
+import { roadConnections } from "./data/roadConnections";
 
 function App() {
   const [start, setStart] = useState<string>('');
@@ -9,6 +11,21 @@ function App() {
   const [roads, setRoads] = useState<RoadNetwork>(initialRoads);
 
   const roadOptions = Object.keys(initialRoads);
+
+  const handleCalculateRoute = () => {
+    if (!start || !end) {
+      alert("Please enter both start and end roads.");
+      return;
+    }
+    
+    const calculatedRoute = findShortestPath(start, end, roads, roadConnections)
+    console.log("🚀 ~ calculatedRoute:", calculatedRoute)
+    if (calculatedRoute.length === 0) {
+      alert("No valid route found.");
+    } else {
+      setRoute(calculatedRoute);
+    }
+  };
 
   return (
     <>
@@ -50,14 +67,15 @@ function App() {
                 </div>
               </div>
               <button
+                onClick={handleCalculateRoute}
                 className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
               >
                 Calculate Route
               </button>
               {route.length > 0 && (
-                <div className="mt-6 p-4 bg-gray-50 rounded">
+                <div className="mt-6 p-4 bg-blue-50 rounded-lg">
                   <h2 className="text-xl font-semibold text-gray-800 mb-2">Calculated Route:</h2>
-                  <p className="text-lg text-gray-600">{route.join(' > ')}</p>
+                  <p className="text-lg text-gray-700">{route.join(' > ')}</p>
                 </div>
               )}
             </div>

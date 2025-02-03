@@ -12,6 +12,37 @@ export function findShortestPath(start: string, end: string, roads: RoadNetwork,
     }
     distances[start] = 0;
 
+    while (unvisited.size > 0) {
+        let current = '';
+        let minDistance = Infinity;
+        for (const road of unvisited) {
+            if (distances[road] < minDistance) {
+                minDistance = distances[road];
+                current = road;
+            }
+        }
 
+        if (current === end) break;
 
+        for (const neighbor of graph[current]) {
+            if (!unvisited.has(neighbor)) continue;
+            const congestionWeight = roads[neighbor].congestion;
+            const newDistance = distances[current] + 1 + congestionWeight; 
+
+            if (newDistance < distances[neighbor]) {
+                distances[neighbor] = newDistance;
+                previous[neighbor] = current;
+            }
+        }
+        unvisited.delete(current);
+    }
+
+    const path: string[] = [];
+    let current: string | null = end;
+    while (current !== null) {
+        path.unshift(current);
+        current = previous[current];
+    }
+
+    return path;
 }
